@@ -7,8 +7,10 @@ $dbPassword = "";
 $dbname = "usuarios";
 
 // Función para insertar usuario en la base de datos
-function insertarUsuario($usuario, $nombre, $correo, $contrasena) {
+function insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin) {
     global $servername, $username, $dbPassword, $dbname;
+    unset($_SESSION['registro_error']);
+    unset($_SESSION['registro_exitoso']);
     // Crear conexión
     $conn = new mysqli($servername, $username, $dbPassword, $dbname);
 
@@ -36,18 +38,18 @@ function insertarUsuario($usuario, $nombre, $correo, $contrasena) {
 
         // Consulta SQL para insertar usuario
         $sqlInsert = "INSERT INTO usuarios (usuario, nombre, correo, contrasena) "
-                . "VALUES ('$usuario', '$nombre', '$correo', '$hash')";
+        . "VALUES ('$usuario', '$nombre', '$correo', '$hash')";
 
-        if ($conn->query($sqlInsert) === TRUE) {
+        if ($conn->query($sqlInsert) === true) {
             $_SESSION['registro_exitoso'] = true; // Marcar registro exitoso en la sesión
         } else {
-            $_SESSION['registro_exitoso'] = false; // Marcar registro fallido en la sesión
-        }
+            $_SESSION['registro_error'] = "Error al registrar usuario: " . $conn->error; // Marcar registro fallido en la sesión        }
     }
 
     // Cerrar conexión
     $conn->close();
-}
+
+}}
 
 
 // Función para verificar usuario al iniciar sesión
@@ -68,6 +70,11 @@ function verificarUsuario($usuario, $contrasena) {
         $row = $result->fetch_assoc();
         if (password_verify($contrasena, $row['contrasena'])) {
             $_SESSION['usuario'] = $usuario; // Marcar usuario como conectado en la sesión
+            if($row['esAdmin'] == 1 ){
+                $_SESSION['esAdmin'] = 1;
+            }
+            else{
+            $_SESSION['esAdmin'] = 0;}
             echo "Inicio de sesión exitoso <br>";
             echo "<button onclick=\"window.location.href='index.php';\">Ir a la página de inicio</button>";
         } else {
@@ -80,3 +87,4 @@ function verificarUsuario($usuario, $contrasena) {
     // Cerrar conexión
     $conn->close();
 }
+
