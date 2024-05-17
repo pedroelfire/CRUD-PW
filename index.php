@@ -99,7 +99,7 @@ if (isset($_SESSION['usuario'])) {
         <li class="nav-item">
             <?php
                 if($_SESSION['esAdmin'] && $_SESSION['esAdmin'] == 1){
-                   echo '<a class="nav-link active" aria-current="page" href="crud.php">CRUD</a>';
+                   echo '<a class="nav-link active" aria-current="page" href="catalogo_usuarios.php">CRUD</a>';
                 }
             ?>
 

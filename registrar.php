@@ -3,16 +3,15 @@ $usuario = $_POST['usuario'];
 $contrasena = $_POST['contrasena']; 
 $confirmar_contrasena = $_POST['confirmar_contrasena']; 
 $nombre = $_POST['nombre']; 
-$correo = $_POST['correo']; 
+$correo = $_POST['correo'];
+$tipo_perfil = $_POST['tipo_perfil'];
 
 // Comprobar si se han recibido todos los datos
-if ($usuario && $contrasena && $confirmar_contrasena && $nombre) {
-    // Comprobar si las contraseñas coinciden
+if ($usuario && $contrasena && $confirmar_contrasena && $nombre && $tipo_perfil) {
     if ($contrasena === $confirmar_contrasena) {
-        // Crear una cadena con los datos del usuario y agregar un salto de línea
         $esAdmin = 0;
         require_once 'conexion.php';
-        insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin);
+        insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin, $tipo_perfil);
             if(isset($_SESSION['registro_error'])) {
             echo $_SESSION['registro_error'];
             return;
