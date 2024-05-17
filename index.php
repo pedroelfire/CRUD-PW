@@ -34,7 +34,8 @@ if(!isset($_SESSION['usuario'])) {
         nombre VARCHAR(50) NOT NULL,
         correo VARCHAR(50) NOT NULL,
         contrasena VARCHAR(255) NOT NULL,
-        esAdmin BOOLEAN NOT NULL DEFAULT FALSE
+        esAdmin BOOLEAN NOT NULL DEFAULT FALSE,
+        tipoPerfil VARCHAR(50) NOT NULL
     )";
     if ($conn->query($sqlCreateTable) === TRUE) {
     } else {
@@ -51,8 +52,8 @@ if(!isset($_SESSION['usuario'])) {
         $hash = password_hash('123456789', PASSWORD_DEFAULT);
 
         // Consulta SQL para insertar usuario Admin
-        $sqlInsertAdmin = "INSERT INTO usuarios (usuario, nombre, correo, contrasena, esAdmin) "
-                . "VALUES ('Admin', 'Admin', 'admin@root', '$hash', TRUE)";
+        $sqlInsertAdmin = "INSERT INTO usuarios (usuario, nombre, correo, contrasena, esAdmin, tipoPerfil ) "
+                . "VALUES ('Admin', 'Admin', 'admin@root', '$hash', TRUE, 'Admin')";
 
         if ($conn->query($sqlInsertAdmin) === TRUE) {
             echo "Usuario Admin creado correctamente<br>";

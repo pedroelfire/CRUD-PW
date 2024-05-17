@@ -7,7 +7,7 @@ $dbPassword = "";
 $dbname = "usuarios";
 
 // Función para insertar usuario en la base de datos
-function insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin) {
+function insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin, $tipoPerfil) {
     global $servername, $username, $dbPassword, $dbname;
     unset($_SESSION['registro_error']);
     unset($_SESSION['registro_exitoso']);
@@ -37,8 +37,8 @@ function insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin) {
         $hash = password_hash($contrasena, PASSWORD_DEFAULT);
 
         // Consulta SQL para insertar usuario
-        $sqlInsert = "INSERT INTO usuarios (usuario, nombre, correo, contrasena) "
-        . "VALUES ('$usuario', '$nombre', '$correo', '$hash')";
+        $sqlInsert = "INSERT INTO usuarios (usuario, nombre, correo, contrasena, tipoPerfil) "
+        . "VALUES ('$usuario', '$nombre', '$correo', '$hash', '$tipoPerfil')";
 
         if ($conn->query($sqlInsert) === true) {
             $_SESSION['registro_exitoso'] = true; // Marcar registro exitoso en la sesión
