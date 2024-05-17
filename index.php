@@ -20,7 +20,6 @@ if(!isset($_SESSION['usuario'])) {
     // Crear base de datos si no existe
     $sqlCreateDB = "CREATE DATABASE IF NOT EXISTS $dbname";
     if ($conn->query($sqlCreateDB) === TRUE) {
-        echo "Base de datos creada correctamente<br>";
     } else {
         die("Error al crear la base de datos: " . $conn->error);
     }
@@ -38,7 +37,6 @@ if(!isset($_SESSION['usuario'])) {
         esAdmin BOOLEAN NOT NULL DEFAULT FALSE
     )";
     if ($conn->query($sqlCreateTable) === TRUE) {
-        echo "Tabla de usuarios creada correctamente<br>";
     } else {
         die("Error al crear la tabla de usuarios: " . $conn->error);
     }
@@ -69,10 +67,6 @@ if(!isset($_SESSION['usuario'])) {
 
 if (isset($_SESSION['usuario'])) {
     $usuario = $_SESSION['usuario'];
-    echo "Bienvenid@ $usuario <br>";
-    if($_SESSION['esAdmin'] === 1){
-        echo "Esta cuenta puede manejar el CRUD";
-    }
 } else {
     header("Location: login.html");
     exit();
