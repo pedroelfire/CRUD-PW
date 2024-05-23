@@ -1,16 +1,30 @@
 <?php
-session_start();
+// Iniciar sesión solo si no hay una sesión activa
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 $servername = "localhost";
 $username = "root";
 $dbPassword = "";
 $dbname = "usuarios";
 
-// Función para insertar usuario en la base de datos
-function insertarUsuario($usuario, $nombre, $correo, $contrasena, $tipoPerfil) {
+// Funciones para la base de datos
+
+function obtenerUsuarios() {
+    global $servername, $username, $dbPassword, $dbname;
+    $conn = new mysqli($servername, $username, $dbPassword, $dbname);
+    $sql = "SELECT * FROM usuarios";
+    $result = $conn->query($sql);
+    $conn->close();
+    return $result;
+}
+
+function insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin, $tipoPerfil) {
     global $servername, $username, $dbPassword, $dbname;
     unset($_SESSION['registro_error']);
     unset($_SESSION['registro_exitoso']);
+
     // Crear conexión
     $conn = new mysqli($servername, $username, $dbPassword, $dbname);
 
@@ -37,11 +51,10 @@ function insertarUsuario($usuario, $nombre, $correo, $contrasena, $tipoPerfil) {
         $hash = password_hash($contrasena, PASSWORD_DEFAULT);
 
         // Consulta SQL para insertar usuario
-        $sqlInsert = "INSERT INTO usuarios (usuario, nombre, correo, contrasena, tipoPerfil) "
-        . "VALUES ('$usuario', '$nombre', '$correo', '$hash', '$tipoPerfil')";
+        $sqlInsert = "INSERT INTO usuarios (usuario, nombre, correo, contrasena, esAdmin, tipoPerfil) VALUES ('$usuario', '$nombre', '$correo', '$hash', '$esAdmin', '$tipoPerfil')";
 
-        if ($conn->query($sqlInsert) === true) {
-            $_SESSION['registro_exitoso'] = true; // Marcar registro exitoso en la sesión
+        if ($conn->query($sqlInsert) === TRUE) {
+            $_SESSION['registro_exitoso'] = "Usuario añadido correctamente";
         } else {
             $_SESSION['registro_error'] = "Error al registrar usuario: " . $conn->error;
         }
@@ -51,63 +64,36 @@ function insertarUsuario($usuario, $nombre, $correo, $contrasena, $tipoPerfil) {
     $conn->close();
 }
 
-// Función para verificar usuario al iniciar sesión
-function verificarUsuario($usuario, $contrasena) {
+function obtenerUsuarioPorId($id) {
     global $servername, $username, $dbPassword, $dbname;
-    // Crear conexión
     $conn = new mysqli($servername, $username, $dbPassword, $dbname);
-
-    // Verificar conexión
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Consulta SQL para buscar usuario por nombre de usuario
-    $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+    $sql = "SELECT * FROM usuarios WHERE id = $id";
     $result = $conn->query($sql);
-    if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        if (password_verify($contrasena, $row['contrasena'])) {
-            $_SESSION['usuario'] = $usuario; // Marcar usuario como conectado en la sesión
-            $_SESSION['esAdmin'] = $row['esAdmin'];
-            echo "Inicio de sesión exitoso <br>";
-            echo "<button onclick=\"window.location.href='index.php';\">Ir a la página de inicio</button>";
-        } else {
-            echo "Credenciales incorrectas";
-        }
-    } else {
-        echo "Usuario no encontrado";
-    }
+    $conn->close();
+    return $result->fetch_assoc();
+}
 
-    // Cerrar conexión
+function actualizarUsuario($id, $usuario, $nombre, $correo, $tipoPerfil) {
+    global $servername, $username, $dbPassword, $dbname;
+    $conn = new mysqli($servername, $username, $dbPassword, $dbname);
+    $sql = "UPDATE usuarios SET usuario='$usuario', nombre='$nombre', correo='$correo', tipoPerfil='$tipoPerfil' WHERE id=$id";
+    if ($conn->query($sql) === TRUE) {
+        $_SESSION['actualizacion_exitoso'] = "Usuario actualizado de manera correcta";
+    } else {
+        $_SESSION['actualizacion_error'] = "Error al actualizar usuario: " . $conn->error;
+    }
     $conn->close();
 }
 
-// Función para obtener todos los usuarios registrados
-function obtenerUsuarios() {
+function eliminarUsuario($id) {
     global $servername, $username, $dbPassword, $dbname;
-    // Crear conexión
     $conn = new mysqli($servername, $username, $dbPassword, $dbname);
-
-    // Verificar conexión
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+    $sql = "DELETE FROM usuarios WHERE id = $id";
+    if ($conn->query($sql) === TRUE) {
+        $_SESSION['eliminacion_exitoso'] = "Usuario eliminado de manera correcta";
+    } else {
+        $_SESSION['eliminacion_error'] = "Error al eliminar usuario: " . $conn->error;
     }
-
-    // Consulta SQL para obtener todos los usuarios
-    $sql = "SELECT id, usuario, nombre, correo, tipoPerfil FROM usuarios";
-    $result = $conn->query($sql);
-
-    $usuarios = [];
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $usuarios[] = $row;
-        }
-    }
-
-    // Cerrar conexión
     $conn->close();
-
-    return $usuarios;
 }
 ?>
