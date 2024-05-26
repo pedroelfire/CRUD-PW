@@ -1,4 +1,6 @@
 <?php
+session_start(); // Iniciar sesión
+
 $usuario = $_POST['usuario']; 
 $contrasena = $_POST['contrasena']; 
 
@@ -8,3 +10,10 @@ if ($usuario && $contrasena) {
 } else {
     echo "Por favor, complete todos los campos.";
 }
+
+if (isset($_SESSION['login_error'])) {
+    echo $_SESSION['login_error'];
+    unset($_SESSION['login_error']); // Limpiar el mensaje de error después de mostrarlo
+}
+?>
+    

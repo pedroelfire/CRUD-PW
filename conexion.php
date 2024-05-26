@@ -96,4 +96,53 @@ function eliminarUsuario($id) {
     }
     $conn->close();
 }
-?>
+
+function verificarUsuario($usuario, $contrasena) {
+    global $servername, $username, $dbPassword, $dbname;
+    unset($_SESSION['login_error']);
+    unset($_SESSION['login_exitoso']);
+
+    // Crear conexión
+    $conn = new mysqli($servername, $username, $dbPassword, $dbname);
+
+    // Verificar conexión
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Consulta SQL para obtener el usuario
+    $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+    $result = $conn->query($sql);
+
+    // Verificar si el usuario existe
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+
+        // Verificar la contraseña
+        if (password_verify($contrasena, $row['contrasena'])) {
+            // Iniciar sesión
+            $_SESSION['usuario'] = $row['usuario'];
+            $_SESSION['login_exitoso'] = "Inicio de sesión exitoso";
+
+            // Verificar si es admin
+            if ($row['esAdmin'] == 1) {
+                $_SESSION['esAdmin'] = 1;
+            } else {
+                $_SESSION['esAdmin'] = 0;
+            }
+
+            // Redirigir a index.php
+            header("Location: index.php");
+            exit(); // Asegura que el script se detenga después de la redirección
+        } else {
+            $_SESSION['login_error'] = "Contraseña incorrecta";
+        }
+    } else {
+        $_SESSION['login_error'] = "Usuario no encontrado";
+    }
+
+    // Cerrar conexión
+    $conn->close();
+}
+
+
