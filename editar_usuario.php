@@ -21,11 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $correo = $_POST['correo'];
     $tipoPerfil = $_POST['tipoPerfil'];
+    $usuarioNombre = $_POST['usuario'];
 
-    $resultado = actualizarUsuario($id, $nombre, $correo, $tipoPerfil);
+    $resultado = actualizarUsuario($id, $usuarioNombre, $nombre, $correo, $tipoPerfil);
 
     if ($resultado) {
         $actualizacionExitosa = true;
+    } else {
+        echo "Error al actualizar el usuario.";
     }
 }
 ?>
@@ -49,6 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Editar Usuario</h2>
         <form action="editar_usuario.php?id=<?php echo $usuario['id']; ?>" method="post">
             <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
+            <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" name="usuario" class="form-control" value="<?php echo $usuario['usuario']; ?>" required>
+            </div>
             <div class="form-group">
                 <label>Nombre</label>
                 <input type="text" name="nombre" class="form-control" value="<?php echo $usuario['nombre']; ?>" required>

@@ -100,12 +100,15 @@ if (isset($_SESSION['usuario'])) {
             <?php
                 if($_SESSION['esAdmin'] && $_SESSION['esAdmin'] == 1){
                    echo '<a class="nav-link active" aria-current="page" href="catalogo_usuarios.php">CRUD</a>';
+                   echo '</li> <li class="nav-item">';
+                    echo '<a class="nav-link active" aria-current="page" href="catalogo_usuarios.php">Subida de reticulas</a>';
+
                 }
             ?>
 
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Generacion de reticula</a>
+          <a class="nav-link active" href>Ver reticulas</a>
         </li>
             <li>
                 <a class="nav-link active" href="logout.php">Cerrar Sesion</a>

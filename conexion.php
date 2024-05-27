@@ -76,25 +76,42 @@ function obtenerUsuarioPorId($id) {
 function actualizarUsuario($id, $usuario, $nombre, $correo, $tipoPerfil) {
     global $servername, $username, $dbPassword, $dbname;
     $conn = new mysqli($servername, $username, $dbPassword, $dbname);
-    $sql = "UPDATE usuarios SET usuario='$usuario', nombre='$nombre', correo='$correo', tipoPerfil='$tipoPerfil' WHERE id=$id";
-    if ($conn->query($sql) === TRUE) {
-        $_SESSION['actualizacion_exitoso'] = "Usuario actualizado de manera correcta";
-    } else {
-        $_SESSION['actualizacion_error'] = "Error al actualizar usuario: " . $conn->error;
+    
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     }
-    $conn->close();
+    
+    $sql = "UPDATE usuarios SET usuario=?, nombre=?, correo=?, tipoPerfil=? WHERE id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssi", $usuario, $nombre, $correo, $tipoPerfil, $id);
+    
+    if ($stmt->execute()) {
+        $stmt->close();
+        $conn->close();
+        return true;
+    } else {
+        $stmt->close();
+        $conn->close();
+        return false;
+    }
 }
 
 function eliminarUsuario($id) {
     global $servername, $username, $dbPassword, $dbname;
     $conn = new mysqli($servername, $username, $dbPassword, $dbname);
-    $sql = "DELETE FROM usuarios WHERE id = $id";
-    if ($conn->query($sql) === TRUE) {
-        $_SESSION['eliminacion_exitoso'] = "Usuario eliminado de manera correcta";
-    } else {
-        $_SESSION['eliminacion_error'] = "Error al eliminar usuario: " . $conn->error;
+    
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     }
-    $conn->close();
+    
+    $sql = "DELETE FROM usuarios WHERE id=$id";
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        return true;
+    } else {
+        $conn->close();
+        return false;
+    }
 }
 
 function verificarUsuario($usuario, $contrasena) {
