@@ -3,8 +3,7 @@ session_start(); // Iniciar sesión
 
 // Verificar si el usuario ha iniciado sesión
 $id = $_SESSION['id'];
-echo $_SESSION['usuario'];
-echo $_SESSION["err_usuario"],"aa";
+echo $_SESSION["err_usuario"];
 $tipoPerfil = $_SESSION['tipoPerfil'];
 
 // Directorio de retículas
