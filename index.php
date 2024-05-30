@@ -101,14 +101,14 @@ if (isset($_SESSION['usuario'])) {
                 if($_SESSION['esAdmin'] && $_SESSION['esAdmin'] == 1){
                    echo '<a class="nav-link active" aria-current="page" href="catalogo_usuarios.php">CRUD</a>';
                    echo '</li> <li class="nav-item">';
-                    echo '<a class="nav-link active" aria-current="page" href="catalogo_usuarios.php">Subida de reticulas</a>';
+                    echo '<a class="nav-link active" aria-current="page" href="subida.html">Subida de reticulas</a>';
 
                 }
             ?>
 
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href>Ver reticulas</a>
+          <a class="nav-link active" href="ver_reticulas.php">Ver reticulas</a>
         </li>
             <li>
                 <a class="nav-link active" href="logout.php">Cerrar Sesion</a>

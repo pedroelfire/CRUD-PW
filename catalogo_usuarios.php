@@ -39,23 +39,47 @@ if(!isset($_SESSION['usuario']) || ($_SESSION['esAdmin'] != 1)) {
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Acciones</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+            <?php
+                if($_SESSION['esAdmin'] && $_SESSION['esAdmin'] == 1){
+                   echo '<a class="nav-link active" aria-current="page" href="catalogo_usuarios.php">CRUD</a>';
+                   echo '</li> <li class="nav-item">';
+                    echo '<a class="nav-link active" aria-current="page" href="subida.html">Subida de reticulas</a>';
+
+                }
+            ?>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="ver_reticulas.php">Ver reticulas</a>
+        </li>
+            <li>
+                <a class="nav-link active" href="logout.php">Cerrar Sesion</a>
+            </li>
+
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
     <div class="wrapper">
+        
         <div class="container-fluid">
             <div class="row">
+                
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
-                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                            <div class="container-fluid">
-                                <a class="navbar-brand" href="index.php">Inicio</a>
-                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                    <ul class="navbar-nav ml-auto">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="logout.php">Cerrar Sesión</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
+
+                        
                         <h2 class="pull-left">Usuarios de la Plataforma</h2>
                         <?php if ($_SESSION['esAdmin']): ?>
                             <a href="agregar_usuario.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Añadir Nuevo Usuario</a>

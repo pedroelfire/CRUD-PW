@@ -72,7 +72,14 @@ function obtenerUsuarioPorId($id) {
     $conn->close();
     return $result->fetch_assoc();
 }
-
+function obtenerUsuarioPorUsuario($usuario) {
+    global $servername, $username, $dbPassword, $dbname;
+    $conn = new mysqli($servername, $username, $dbPassword, $dbname);
+    $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+    $result = $conn->query($sql);
+    $conn->close();
+    return $result->fetch_assoc(); // Devuelve false si no se encontró ningún usuario
+}
 function actualizarUsuario($id, $usuario, $nombre, $correo, $tipoPerfil) {
     global $servername, $username, $dbPassword, $dbname;
     $conn = new mysqli($servername, $username, $dbPassword, $dbname);
@@ -161,5 +168,3 @@ function verificarUsuario($usuario, $contrasena) {
     // Cerrar conexión
     $conn->close();
 }
-
-
