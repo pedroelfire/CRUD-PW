@@ -1,4 +1,14 @@
 <?php
+session_start(); // Inicia la sesión al principio del archivo
+
+// Verifica si no hay un usuario en la sesión o si no es admin
+if(!isset($_SESSION['usuario']) || ($_SESSION['esAdmin'] != 1)) {
+    header("Location: login.html");
+    exit();
+}
+
+// Resto de tu código aquí
+
 require_once 'conexion.php';
 
 $actualizacionExitosa = false;

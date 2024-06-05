@@ -52,7 +52,7 @@ if(!isset($_SESSION['usuario']) || ($_SESSION['esAdmin'] != 1)) {
                 if($_SESSION['esAdmin'] && $_SESSION['esAdmin'] == 1){
                    echo '<a class="nav-link active" aria-current="page" href="catalogo_usuarios.php">CRUD</a>';
                    echo '</li> <li class="nav-item">';
-                    echo '<a class="nav-link active" aria-current="page" href="subida.html">Subida de reticulas</a>';
+                    echo '<a class="nav-link active" aria-current="page" href="subida.php">Subida de reticulas</a>';
 
                 }
             ?>

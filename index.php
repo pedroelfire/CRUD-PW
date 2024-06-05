@@ -29,14 +29,14 @@ if(!isset($_SESSION['usuario'])) {
 
     // Crear tabla de usuarios si no existe
     $sqlCreateTable = "CREATE TABLE IF NOT EXISTS usuarios (
-        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        usuario VARCHAR(30) NOT NULL,
-        nombre VARCHAR(50) NOT NULL,
-        correo VARCHAR(50) NOT NULL,
-        contrasena VARCHAR(255) NOT NULL,
-        esAdmin BOOLEAN NOT NULL DEFAULT FALSE,
-        tipoPerfil VARCHAR(50) NOT NULL
-    )";
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(30) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    correo VARCHAR(50) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    esAdmin BOOLEAN NOT NULL DEFAULT FALSE,
+    tipoPerfil VARCHAR(50) NOT NULL
+) AUTO_INCREMENT=100";
     if ($conn->query($sqlCreateTable) === TRUE) {
     } else {
         die("Error al crear la tabla de usuarios: " . $conn->error);
@@ -69,7 +69,7 @@ if(!isset($_SESSION['usuario'])) {
 if (isset($_SESSION['usuario'])) {
     $usuario = $_SESSION['usuario'];
 } else {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 ?>
@@ -90,7 +90,7 @@ if (isset($_SESSION['usuario'])) {
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Acciones</a>
+    <a class="navbar-brand" href="index.php">Acciones</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -101,7 +101,7 @@ if (isset($_SESSION['usuario'])) {
                 if($_SESSION['esAdmin'] && $_SESSION['esAdmin'] == 1){
                    echo '<a class="nav-link active" aria-current="page" href="catalogo_usuarios.php">CRUD</a>';
                    echo '</li> <li class="nav-item">';
-                    echo '<a class="nav-link active" aria-current="page" href="subida.html">Subida de reticulas</a>';
+                    echo '<a class="nav-link active" aria-current="page" href="subida.php">Subida de reticulas</a>';
 
                 }
             ?>
