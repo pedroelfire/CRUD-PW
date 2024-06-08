@@ -20,7 +20,7 @@ function obtenerUsuarios() {
     return $result;
 }
 
-function insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin, $tipoPerfil) {
+function insertarUsuario($usuario, $numero, $nombre, $correo, $contrasena, $esAdmin, $tipoPerfil) {
     global $servername, $username, $dbPassword, $dbname;
     unset($_SESSION['registro_error']);
     unset($_SESSION['registro_exitoso']);
@@ -51,7 +51,7 @@ function insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin, $tip
         $hash = password_hash($contrasena, PASSWORD_DEFAULT);
 
         // Consulta SQL para insertar usuario
-        $sqlInsert = "INSERT INTO usuarios (usuario, nombre, correo, contrasena, esAdmin, tipoPerfil) VALUES ('$usuario', '$nombre', '$correo', '$hash', '$esAdmin', '$tipoPerfil')";
+        $sqlInsert = "INSERT INTO usuarios (id, usuario,  nombre, correo, contrasena, esAdmin, tipoPerfil) VALUES ('$numero','$usuario', '$nombre', '$correo', '$hash', '$esAdmin', '$tipoPerfil')";
 
         if ($conn->query($sqlInsert) === TRUE) {
             $_SESSION['registro_exitoso'] = "Usuario añadido correctamente";
@@ -80,7 +80,7 @@ function obtenerUsuarioPorUsuario($usuario) {
     $conn->close();
     return $result->fetch_assoc(); // Devuelve false si no se encontró ningún usuario
 }
-function actualizarUsuario($id, $usuario, $nombre, $correo, $tipoPerfil) {
+function actualizarUsuario($id, $numero, $usuario, $nombre, $correo, $tipoPerfil) {
     global $servername, $username, $dbPassword, $dbname;
     $conn = new mysqli($servername, $username, $dbPassword, $dbname);
     
@@ -88,9 +88,9 @@ function actualizarUsuario($id, $usuario, $nombre, $correo, $tipoPerfil) {
         die("Connection failed: " . $conn->connect_error);
     }
     
-    $sql = "UPDATE usuarios SET usuario=?, nombre=?, correo=?, tipoPerfil=? WHERE id=?";
+    $sql = "UPDATE usuarios SET id=?, usuario=?, nombre=?, correo=?, tipoPerfil=? WHERE id=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssi", $usuario, $nombre, $correo, $tipoPerfil, $id);
+    $stmt->bind_param("issssi", $numero, $usuario, $nombre, $correo, $tipoPerfil, $id);
     
     if ($stmt->execute()) {
         $stmt->close();
@@ -102,6 +102,7 @@ function actualizarUsuario($id, $usuario, $nombre, $correo, $tipoPerfil) {
         return false;
     }
 }
+
 
 function eliminarUsuario($id) {
     global $servername, $username, $dbPassword, $dbname;

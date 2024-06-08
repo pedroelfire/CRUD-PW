@@ -29,11 +29,12 @@ if (isset($_GET['id'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
     $nombre = $_POST['nombre'];
+    $numero = $_POST['numero'];
     $correo = $_POST['correo'];
     $tipoPerfil = $_POST['tipoPerfil'];
     $usuarioNombre = $_POST['usuario'];
 
-    $resultado = actualizarUsuario($id, $usuarioNombre, $nombre, $correo, $tipoPerfil);
+    $resultado = actualizarUsuario($id, $numero, $usuarioNombre, $nombre, $correo, $tipoPerfil);
 
     if ($resultado) {
         $actualizacionExitosa = true;
@@ -65,6 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="form-group">
                 <label>Usuario</label>
                 <input type="text" name="usuario" class="form-control" value="<?php echo $usuario['usuario']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Numero de tarjeta</label>
+                <input type="text" name="numero" class="form-control" value="<?php echo $usuario['id']; ?>" required>
             </div>
             <div class="form-group">
                 <label>Nombre</label>

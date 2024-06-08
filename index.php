@@ -28,15 +28,16 @@ if(!isset($_SESSION['usuario'])) {
     $conn->select_db($dbname);
 
     // Crear tabla de usuarios si no existe
-    $sqlCreateTable = "CREATE TABLE IF NOT EXISTS usuarios (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+$sqlCreateTable = "CREATE TABLE IF NOT EXISTS usuarios (
+    id INT(3) UNSIGNED PRIMARY KEY,
     usuario VARCHAR(30) NOT NULL,
     nombre VARCHAR(50) NOT NULL,
     correo VARCHAR(50) NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
     esAdmin BOOLEAN NOT NULL DEFAULT FALSE,
     tipoPerfil VARCHAR(50) NOT NULL
-) AUTO_INCREMENT=100";
+)";
+
     if ($conn->query($sqlCreateTable) === TRUE) {
     } else {
         die("Error al crear la tabla de usuarios: " . $conn->error);
@@ -52,8 +53,8 @@ if(!isset($_SESSION['usuario'])) {
         $hash = password_hash('123456789', PASSWORD_DEFAULT);
 
         // Consulta SQL para insertar usuario Admin
-        $sqlInsertAdmin = "INSERT INTO usuarios (usuario, nombre, correo, contrasena, esAdmin, tipoPerfil ) "
-                . "VALUES ('Admin', 'Admin', 'admin@root', '$hash', TRUE, 'Admin')";
+        $sqlInsertAdmin = "INSERT INTO usuarios (id, usuario, nombre, correo, contrasena, esAdmin, tipoPerfil ) "
+                . "VALUES (100, 'Admin', 'Admin', 'admin@root', '$hash', TRUE, 'Admin')";
 
         if ($conn->query($sqlInsertAdmin) === TRUE) {
             echo "Usuario Admin creado correctamente<br>";

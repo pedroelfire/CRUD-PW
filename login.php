@@ -88,7 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="password" name="contrasena" required> <br>
         <br>
         <input type="submit" name="accion" value="Iniciar Sesion">
-        <input type="button" value="Registrarse" onclick="window.location.href='registrar.html';">
     </form>
 
     <!-- Modal de Error -->

@@ -4,13 +4,14 @@ require_once 'conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario = $_POST['usuario'];
+    $numero = $_POST['numero'];
     $nombre = $_POST['nombre'];
     $correo = $_POST['correo'];
     $contrasena = $_POST['contrasena'];
     $tipoPerfil = $_POST['tipoPerfil'];
     $esAdmin = isset($_POST['esAdmin']) ? 1 : 0;
 
-    insertarUsuario($usuario, $nombre, $correo, $contrasena, $esAdmin, $tipoPerfil);
+    insertarUsuario($usuario,$numero, $nombre, $correo, $contrasena, $esAdmin, $tipoPerfil);
     
     if (isset($_SESSION['registro_exitoso'])) {
         $mensaje_exito = $_SESSION['registro_exitoso'];
@@ -51,6 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="form-group">
                 <label>Usuario</label>
                 <input type="text" name="usuario" class="form-control" required>
+            </div>
+                <div class="form-group">
+                <label>Numero de tarjeta</label>
+                <input type="text" name="numero" class="form-control" required>
             </div>
             <div class="form-group">
                 <label>Nombre</label>
